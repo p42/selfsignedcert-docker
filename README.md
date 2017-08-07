@@ -6,7 +6,7 @@ A docker image that creates self signed certificates and saves them to /ssl, mou
 
 * HOST = Host name to use for the self signed certificates. (default: server.domain.tld)
 * TYPE = What type of files to save from "crt", "pem" or "all". (default: all)
-* OVERWRITE = Overwrite if preexisting files exist, values from "true", "yes", "false" or "no"
+* OVERWRITE = Overwrite if preexisting files exist, values from "true", "yes", "false" or "no" (default: false)
 
 ## Outputted filenames (hostname is from HOST environment variable)
 * crt = hostname.crt and hostname.key
