@@ -2,6 +2,22 @@
 
 set -e
 
+if [ -z "$OVERWRITE" ]; then
+  RUNOVERWRITE=false
+else
+  case $OVERWRITE in
+    true|yes)
+      RUNOVERWRITE=true
+      ;;
+    false|no)
+      RUNOVERWRITE=false
+      ;;
+    *)
+      RUNOVERWRITE=false
+      ;;
+  esac
+fi
+
 if [ -z "$HOST" ]; then
   RUNHOSTNAME="server.domain.tld"
 else
@@ -37,8 +53,26 @@ else
   esac
 fi
 
+
+if [ "$RUNOVERWRITE" = false ]; then
+  if [ "$SAVEKEY" = true ] && [ -e /ssl/${RUNHOSTNAME}.key ]; then
+    echo "Exiting run: /ssl/${RUNHOSTNAME}.key alrealdy exists"
+    exit 0
+  fi
+
+  if [ "$SAVECERT" = true ] && [ -e /ssl/${RUNHOSTNAME}.crt ]; then
+    echo "Exiting run: /ssl/${RUNHOSTNAME}.crt already exists"
+    exit 0
+  fi
+
+  if [ "$SAVEPEM" = true ] && [ -e /ssl/${RUNHOSTNAME}.pem ]; then
+    echo "Exiting run: /ssl/${RUNHOSTNAME}.pem already exists"
+    exit 0
+  fi
+fi
+
 if [ ! -d "/ssl" ]; then
-  mkdir /ss/
+  mkdir /ssl
 fi
 
 cd /tmp
